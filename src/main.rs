@@ -1,124 +1,181 @@
 fn main() {
-    let mut total: i64 = 0;
-    let masses: [i64; 100] = get_puzzle_input();
-    for mass in masses.iter() {
-        let mut result: i64 = *mass;
-        loop {
-            result = get_fuel_required_by_mass(result);
-            if result <= 0 { break; }
-            total += result;
-            println!("FUEL ADDED: {}", result);
+    let int_codes: [i64; 137] = get_puzzle_input();
 
-        }
+    let int_codes_restored_state: [i64; 137] = restore_last_state(int_codes);
+    
+    let processed_int_codes: [i64; 137] = process_int_codes(int_codes_restored_state);
+    println!("Value [0]: {}", processed_int_codes[0]);
+}
+
+fn process_int_codes(mut int_codes: [i64; 137]) -> [i64; 137] {
+    let mut index: usize = 0;
+    loop {
+        let op_code: i64 = int_codes[index];
+        if op_code == 99 { break; }
+
+        let position_two: usize = int_codes[index + 1] as usize;
+        let position_three: usize = int_codes[index + 2] as usize;
+        let position_four: usize = int_codes[index + 3] as usize;
+
+        if op_code == 1 {
+            let result: i64 = int_codes[position_two] + int_codes[position_three];
+            int_codes[position_four] = result;
+        };
+
+        if op_code == 2 {
+            let result: i64 = int_codes[position_two] * int_codes[position_three];
+            int_codes[position_four] = result;
+        };
+
+        index += 4;
     }
-    println!("TOTAL FUEL: {}", total);
+    return int_codes;
 }
 
-fn get_fuel_required_by_mass(mass: i64) -> i64 {
-    return ((mass as f64 / 3.00).floor() - 2.00) as i64; 
+fn restore_last_state(mut int_codes: [i64; 137]) -> [i64; 137] {
+    int_codes[1] = 12;
+    int_codes[2] = 2;
+    return int_codes;
 }
 
-fn get_puzzle_input() -> [i64; 100] {
+fn get_puzzle_input() -> [i64; 137] {
     return [
-        93326,
-        54591,
-        106194,
-        129163,
-        110634,
-        81294,
-        59548,
-        77988,
-        66354,
-        108990,
-        91097,
-        102076,
-        67526,
-        135820,
-        109167,
-        94391,
-        78323,
-        75009,
-        61836,
-        55751,
-        54229,
-        145159,
-        103821,
-        136601,
-        119830,
-        57607,
-        69157,
-        115099,
-        53756,
-        136063,
-        62243,
-        111594,
-        57598,
-        83789,
-        130669,
-        67435,
-        112187,
-        141492,
-        109872,
-        84640,
-        119694,
-        119030,
-        75716,
-        119017,
-        106547,
-        101674,
-        120137,
-        93759,
-        115976,
-        119378,
-        86245,
-        93317,
-        53712,
-        69079,
-        92125,
-        62397,
-        102365,
-        115860,
-        111618,
-        65452,
-        83625,
-        90951,
-        110774,
-        114943,
-        99559,
-        101417,
-        100651,
-        98412,
-        109963,
-        68158,
-        121405,
-        85002,
-        119519,
-        92200,
-        125104,
-        71018,
-        131892,
-        92342,
-        51671,
-        94691,
-        136330,
-        64877,
-        65449,
-        65008,
-        91656,
-        144705,
-        130867,
-        74732,
-        61977,
-        129490,
-        91928,
-        109200,
-        94488,
-        99216,
-        89115,
-        89756,
-        52113,
-        83463,
-        101765,
-        62363
+        1,
+        0,
+        0,
+        3,
+        1,
+        1,
+        2,
+        3,
+        1,
+        3,
+        4,
+        3,
+        1,
+        5,
+        0,
+        3,
+        2,
+        6,
+        1,
+        19,
+        2,
+        19,
+        13,
+        23,
+        1,
+        23,
+        10,
+        27,
+        1,
+        13,
+        27,
+        31,
+        2,
+        31,
+        10,
+        35,
+        1,
+        35,
+        9,
+        39,
+        1,
+        39,
+        13,
+        43,
+        1,
+        13,
+        43,
+        47,
+        1,
+        47,
+        13,
+        51,
+        1,
+        13,
+        51,
+        55,
+        1,
+        5,
+        55,
+        59,
+        2,
+        10,
+        59,
+        63,
+        1,
+        9,
+        63,
+        67,
+        1,
+        6,
+        67,
+        71,
+        2,
+        71,
+        13,
+        75,
+        2,
+        75,
+        13,
+        79,
+        1,
+        79,
+        9,
+        83,
+        2,
+        83,
+        10,
+        87,
+        1,
+        9,
+        87,
+        91,
+        1,
+        6,
+        91,
+        95,
+        1,
+        95,
+        10,
+        99,
+        1,
+        99,
+        13,
+        103,
+        1,
+        13,
+        103,
+        107,
+        2,
+        13,
+        107,
+        111,
+        1,
+        111,
+        9,
+        115,
+        2,
+        115,
+        10,
+        119,
+        1,
+        119,
+        5,
+        123,
+        1,
+        123,
+        2,
+        127,
+        1,
+        127,
+        5,
+        0,
+        99,
+        2,
+        14,
+        0,
+        0
     ];
 }
