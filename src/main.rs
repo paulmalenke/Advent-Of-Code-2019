@@ -1,10 +1,18 @@
 fn main() {
     let int_codes: [i64; 137] = get_puzzle_input();
 
-    let int_codes_restored_state: [i64; 137] = restore_last_state(int_codes);
+    'outer: for noun in 0..99 {
+        'inner: for verb in 0..99 {
+            let int_codes_restored_state: [i64; 137] = restore_memory(int_codes, noun, verb);
     
-    let processed_int_codes: [i64; 137] = process_int_codes(int_codes_restored_state);
-    println!("Value [0]: {}", processed_int_codes[0]);
+            let processed_int_codes: [i64; 137] = process_int_codes(int_codes_restored_state);
+
+            if processed_int_codes[0] == 19690720 {
+                println!("Solution: {}", 100 * noun + verb);
+                break 'outer;
+            }
+        }
+    }
 }
 
 fn process_int_codes(mut int_codes: [i64; 137]) -> [i64; 137] {
@@ -13,18 +21,18 @@ fn process_int_codes(mut int_codes: [i64; 137]) -> [i64; 137] {
         let op_code: i64 = int_codes[index];
         if op_code == 99 { break; }
 
-        let position_two: usize = int_codes[index + 1] as usize;
-        let position_three: usize = int_codes[index + 2] as usize;
-        let position_four: usize = int_codes[index + 3] as usize;
+        let parameter_two: usize = int_codes[index + 1] as usize;
+        let parameter_three: usize = int_codes[index + 2] as usize;
+        let parameter_four: usize = int_codes[index + 3] as usize;
 
         if op_code == 1 {
-            let result: i64 = int_codes[position_two] + int_codes[position_three];
-            int_codes[position_four] = result;
+            let result: i64 = int_codes[parameter_two] + int_codes[parameter_three];
+            int_codes[parameter_four] = result;
         };
 
         if op_code == 2 {
-            let result: i64 = int_codes[position_two] * int_codes[position_three];
-            int_codes[position_four] = result;
+            let result: i64 = int_codes[parameter_two] * int_codes[parameter_three];
+            int_codes[parameter_four] = result;
         };
 
         index += 4;
@@ -32,9 +40,9 @@ fn process_int_codes(mut int_codes: [i64; 137]) -> [i64; 137] {
     return int_codes;
 }
 
-fn restore_last_state(mut int_codes: [i64; 137]) -> [i64; 137] {
-    int_codes[1] = 12;
-    int_codes[2] = 2;
+fn restore_memory(mut int_codes: [i64; 137], noun: i64, verb: i64) -> [i64; 137] {
+    int_codes[1] = noun;
+    int_codes[2] = verb;
     return int_codes;
 }
 
