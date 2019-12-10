@@ -2,9 +2,14 @@ fn main() {
     let mut total: i64 = 0;
     let masses: [i64; 100] = get_puzzle_input();
     for mass in masses.iter() {
-        let result: i64 = get_fuel_required_by_mass(*mass);
-        total += result;
-        println!("FUEL ADDED: {}", result);
+        let mut result: i64 = *mass;
+        loop {
+            result = get_fuel_required_by_mass(result);
+            if result <= 0 { break; }
+            total += result;
+            println!("FUEL ADDED: {}", result);
+
+        }
     }
     println!("TOTAL FUEL: {}", total);
 }
