@@ -1,5 +1,5 @@
 [package]
-name = "aoc-day-one"
+name = "advent-of-code-2019"
 version = "0.1.0"
 authors = ["Paul Malenke <pmalenke@mac.com>"]
 edition = "2018"
